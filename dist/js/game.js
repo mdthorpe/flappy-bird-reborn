@@ -15,7 +15,7 @@ window.onload = function () {
 
   game.state.start('boot');
 };
-},{"./states/boot":3,"./states/gameover":4,"./states/menu":5,"./states/play":6,"./states/preload":7}],2:[function(require,module,exports){
+},{"./states/boot":4,"./states/gameover":5,"./states/menu":6,"./states/play":7,"./states/preload":8}],2:[function(require,module,exports){
 'use strict';
 
 var Bird = function(game, x, y, frame) {
@@ -46,6 +46,34 @@ Bird.prototype.update = function() {
 module.exports = Bird;
 
 },{}],3:[function(require,module,exports){
+'use strict';
+
+var Ground = function(game, x, y, width, height) {  
+ 	Phaser.TileSprite.call(this, game, x, y, width, height, 'ground');
+
+	// start scrolling our ground
+	this.autoScroll(-200, 0);
+	// enable physics on the ground
+	// for collision detection
+	//
+	this.game.physics.arcade.enableBody(this);
+
+	// Don't be affected by gravity.
+	//
+	this.body.allowGravity = false;
+
+};
+
+Ground.prototype = Object.create(Phaser.TileSprite.prototype);  
+Ground.prototype.constructor = Ground;
+
+Ground.prototype.update = function() {  
+  // write your prefab's specific update code here  
+};
+
+module.exports = Ground;
+
+},{}],4:[function(require,module,exports){
 
 'use strict';
 
@@ -64,7 +92,7 @@ Boot.prototype = {
 
 module.exports = Boot;
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 
 'use strict';
 function GameOver() {}
@@ -92,7 +120,7 @@ GameOver.prototype = {
 };
 module.exports = GameOver;
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 
 'use strict';
 function Menu() {}
@@ -155,10 +183,11 @@ Menu.prototype = {
 
 module.exports = Menu;
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 
 var Bird = require('../prefabs/bird');
+var Ground = require('../prefabs/ground');
 
 function Play() {}
 Play.prototype = {
@@ -184,12 +213,25 @@ Play.prototype = {
     //
     this.game.add.existing(this.bird);
 
+    // Create a ground from the Ground prefab
+    //
+    this.ground = new Ground(this.game, 0, 400, 335, 112);
+   
+    // Add the ground to the game
+    //
+    this.game.add.existing(this.ground);
+
+
   },
-  update: function() {}
+  update: function() {
+    // Make the Bird and Ground collide
+    //
+    this.game.physics.arcade.collide(this.bird, this.ground);
+  }
 };
 
 module.exports = Play;
-},{"../prefabs/bird":2}],7:[function(require,module,exports){
+},{"../prefabs/bird":2,"../prefabs/ground":3}],8:[function(require,module,exports){
 
 'use strict';
 function Preload() {
