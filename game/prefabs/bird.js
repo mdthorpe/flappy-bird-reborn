@@ -8,8 +8,8 @@ var Bird = function(game, x, y, frame) {
 
   // add and play animation
   //
-  this.animation.add('flap');
-  this.animation.play('flap', 12, true);
+  this.animations.add('flap');
+  this.animations.play('flap', 12, true);
 
   // Add physics
   this.game.physics.arcade.enableBody(this);

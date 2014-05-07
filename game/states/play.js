@@ -18,7 +18,14 @@ Play.prototype = {
     //
     this.background = this.game.add.image(0,0,'background');
 
-    yo
+    // Create a new bird from the Bird prefab
+    //
+    this.bird = new Bird(this.game, 100, this.game.height/2);
+
+    // Add the bird to the game
+    //
+    this.game.add.existing(this.bird);
+
   },
   update: function() {}
 };
