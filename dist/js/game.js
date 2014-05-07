@@ -15,7 +15,37 @@ window.onload = function () {
 
   game.state.start('boot');
 };
-},{"./states/boot":2,"./states/gameover":3,"./states/menu":4,"./states/play":5,"./states/preload":6}],2:[function(require,module,exports){
+},{"./states/boot":3,"./states/gameover":4,"./states/menu":5,"./states/play":6,"./states/preload":7}],2:[function(require,module,exports){
+'use strict';
+
+var Bird = function(game, x, y, frame) {
+  Phaser.Sprite.call(this, game, x, y, 'bird', frame);
+
+  // initialize your prefab here
+  this.anchor.setTo(0.5, 0.5);
+
+  // add and play animation
+  //
+  this.animation.add('flap');
+  this.animation.play('flap', 12, true);
+
+  // Add physics
+  this.game.physics.arcade.enableBody(this);
+  
+};
+
+Bird.prototype = Object.create(Phaser.Sprite.prototype);
+Bird.prototype.constructor = Bird;
+
+Bird.prototype.update = function() {
+  
+  // write your prefab's specific update code here
+  
+};
+
+module.exports = Bird;
+
+},{}],3:[function(require,module,exports){
 
 'use strict';
 
@@ -34,7 +64,7 @@ Boot.prototype = {
 
 module.exports = Boot;
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 
 'use strict';
 function GameOver() {}
@@ -62,7 +92,7 @@ GameOver.prototype = {
 };
 module.exports = GameOver;
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 
 'use strict';
 function Menu() {}
@@ -125,32 +155,34 @@ Menu.prototype = {
 
 module.exports = Menu;
 
-},{}],5:[function(require,module,exports){
-
-  'use strict';
-  function Play() {}
-  Play.prototype = {
-    create: function() {
-
-      // this game is going to use arcade physics
-      //
-      this.game.physics.startSystem(Phaser.Physics.ARCADE);
-
-      // Gravity is down
-      //
-      this.game.physics.arcade.gravity.y = 500;
-
-      // Add the background
-      //
-      this.background = this.game.add.image(0,0,'background');
-
-      
-    },
-    update: function() {}
-  };
-  
-  module.exports = Play;
 },{}],6:[function(require,module,exports){
+'use strict';
+
+var Bird = require('../prefabs/bird');
+
+function Play() {}
+Play.prototype = {
+  create: function() {
+
+    // this game is going to use arcade physics
+    //
+    this.game.physics.startSystem(Phaser.Physics.ARCADE);
+
+    // Gravity is down
+    //
+    this.game.physics.arcade.gravity.y = 500;
+
+    // Add the background
+    //
+    this.background = this.game.add.image(0,0,'background');
+
+    yo
+  },
+  update: function() {}
+};
+
+module.exports = Play;
+},{"../prefabs/bird":2}],7:[function(require,module,exports){
 
 'use strict';
 function Preload() {

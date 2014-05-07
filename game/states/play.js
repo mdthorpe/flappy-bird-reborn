@@ -1,24 +1,26 @@
+'use strict';
 
-  'use strict';
-  function Play() {}
-  Play.prototype = {
-    create: function() {
+var Bird = require('../prefabs/bird');
 
-      // this game is going to use arcade physics
-      //
-      this.game.physics.startSystem(Phaser.Physics.ARCADE);
+function Play() {}
+Play.prototype = {
+  create: function() {
 
-      // Gravity is down
-      //
-      this.game.physics.arcade.gravity.y = 500;
+    // this game is going to use arcade physics
+    //
+    this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
-      // Add the background
-      //
-      this.background = this.game.add.image(0,0,'background');
+    // Gravity is down
+    //
+    this.game.physics.arcade.gravity.y = 500;
 
-      
-    },
-    update: function() {}
-  };
-  
-  module.exports = Play;
+    // Add the background
+    //
+    this.background = this.game.add.image(0,0,'background');
+
+    yo
+  },
+  update: function() {}
+};
+
+module.exports = Play;
