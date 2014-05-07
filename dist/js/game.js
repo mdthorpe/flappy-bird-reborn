@@ -62,6 +62,8 @@ var Ground = function(game, x, y, width, height) {
 	//
 	this.body.allowGravity = false;
 
+	// Make immovable
+	this.body.immovable = true;
 };
 
 Ground.prototype = Object.create(Phaser.TileSprite.prototype);  
