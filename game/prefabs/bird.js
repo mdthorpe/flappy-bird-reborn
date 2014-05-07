@@ -19,6 +19,10 @@ var Bird = function(game, x, y, frame) {
 Bird.prototype = Object.create(Phaser.Sprite.prototype);
 Bird.prototype.constructor = Bird;
 
+Bird.prototype.flap = function() {
+	this.body.velocity.y = -400;
+};
+
 Bird.prototype.update = function() {
   
   // write your prefab's specific update code here

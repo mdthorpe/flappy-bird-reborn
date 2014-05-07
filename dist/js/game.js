@@ -37,6 +37,10 @@ var Bird = function(game, x, y, frame) {
 Bird.prototype = Object.create(Phaser.Sprite.prototype);
 Bird.prototype.constructor = Bird;
 
+Bird.prototype.flap = function() {
+	this.body.velocity.y = -400;
+};
+
 Bird.prototype.update = function() {
   
   // write your prefab's specific update code here
@@ -223,9 +227,24 @@ Play.prototype = {
     //
     this.game.add.existing(this.ground);
 
+    // Keypress setup
+    //
+
+    // prevent spacebar from propogating to the browser
+    // eg: prevent scrolling.
+    this.game.input.keyboard.addKeyCapture([Phaser.Keyboard.SPACEBAR]);
+
+    // add flap control to SPACEBAR
+    //
+    var flapKey = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        flapKey.onDown.add(this.bird.flap, this.bird);
+
+    // add mouse click/tap control
+    this.input.onDown.add(this.bird.flap, this.bird);
 
   },
   update: function() {
+
     // Make the Bird and Ground collide
     //
     this.game.physics.arcade.collide(this.bird, this.ground);
