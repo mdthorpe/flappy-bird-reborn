@@ -19,14 +19,25 @@ var Bird = function(game, x, y, frame) {
 Bird.prototype = Object.create(Phaser.Sprite.prototype);
 Bird.prototype.constructor = Bird;
 
-Bird.prototype.flap = function() {
-	this.body.velocity.y = -400;
-};
-
 Bird.prototype.update = function() {
   
-  // write your prefab's specific update code here
+  // if the nose is up (angle < 90)
+  // bring it back down.
+  if(this.angle < 90){
+  	// every frame bring the nose down 2.5 
+  	// degrees.
+  	this.angle += 2.5;
+  }
   
+};
+
+Bird.prototype.flap = function() {
+	
+	// move the bird up
+	this.body.velocity.y = -400;
+
+	// tilt the nose up
+	this.game.add.tween(this).to({angle: -40}, 100).start();
 };
 
 module.exports = Bird;

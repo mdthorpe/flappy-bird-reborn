@@ -13,7 +13,7 @@ Play.prototype = {
 
     // Gravity is down
     //
-    this.game.physics.arcade.gravity.y = 500;
+    this.game.physics.arcade.gravity.y = 1200;
 
     // Add the background
     //
