@@ -50,8 +50,7 @@ module.exports = function (grunt) {
     },
     open: {
       server: {
-        path: 'http://localhost:9000',
-        app: "google-chrome"
+        path: 'http://localhost:9000'
       }
     },
     copy: {

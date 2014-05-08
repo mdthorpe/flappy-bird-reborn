@@ -13,6 +13,9 @@ var Bird = function(game, x, y, frame) {
 
   // Add physics
   this.game.physics.arcade.enableBody(this);
+
+  // Collide with world bounds
+  this.body.collideWorldBounds=true;
   
 };
 
