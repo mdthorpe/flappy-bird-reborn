@@ -31,13 +31,18 @@ Play.prototype = {
     this.ground = new Ground(this.game, 0, 400, 335, 112);
     this.game.add.existing(this.ground);
 
+    // Pipes
+     
     // Create a group to store the pipeGroup prefabs in
     this.pipes = this.game.add.group();
 
-    // Add a timer for generating pipes
-    this.pipeGenerator = this.game.time.events.loop(Phaser.Timer.SECOND * 1.5, this.generatePipes, this);
-    this.pipeGenerator.timer.start();
+    // Instructions 
 
+    this.instructionsGroup = this.game.add.group();
+    this.instructionsGroup.add(this.game.add.sprite(this.game.width/2, 100, 'getReady'));
+    this.instructionsGroup.add(this.game.add.sprite(this.game.width/2, 325, 'instructions'));
+    this.instructionsGroup.setAll('anchor.x', 0.5);
+    this.instructionsGroup.setAll('anchor.y', 0.5);
 
     // Inputs setup
 
@@ -46,9 +51,11 @@ Play.prototype = {
 
     // Add flap control to SPACEBAR
     var flapKey = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+    flapKey.onDown.addOnce(this.startGame, this);
     flapKey.onDown.add(this.bird.flap, this.bird);
 
     // Add mouse click/tap control
+    this.input.onDown.addOnce(this.startGame, this);
     this.input.onDown.add(this.bird.flap, this.bird);
 
   },
@@ -62,6 +69,18 @@ Play.prototype = {
     this.pipes.forEach(function (pipeGroup) {
         this.game.physics.arcade.collide(this.bird, pipeGroup, this.deathHandler, null, this);
     }, this);
+  },
+
+  startGame: function() {
+    this.bird.body.allowGravity = true;
+    this.bird.alive = true;
+
+    // Add a timer for generating pipes
+    this.pipeGenerator = this.game.time.events.loop(Phaser.Timer.SECOND * 1.25, this.generatePipes, this);
+    this.pipeGenerator.timer.start();
+
+    // Remove instructions
+    this.instructionsGroup.destroy();
   },
 
   generatePipes: function () {

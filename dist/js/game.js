@@ -21,6 +21,10 @@ window.onload = function () {
 var Bird = function(game, x, y, frame) {
   Phaser.Sprite.call(this, game, x, y, 'bird', frame);
 
+  // we don't want the bird alive until
+  // the game actually starts
+  this.alive = false;
+
   // initialize your prefab here
   this.anchor.setTo(0.5, 0.5);
 
@@ -34,6 +38,9 @@ var Bird = function(game, x, y, frame) {
 
   // Collide with world bounds
   this.body.collideWorldBounds=true;
+
+  // Don't listen to gravity by default;
+  this.body.allowGravity = false;
   
 };
 
@@ -44,7 +51,7 @@ Bird.prototype.update = function() {
   
   // if the nose is up (angle < 90)
   // bring it back down.
-  if(this.angle < 90){
+  if(this.angle < 90 & this.alive){
   	// every frame bring the nose down 2.5 
   	// degrees.
   	this.angle += 2.5;
@@ -314,13 +321,18 @@ Play.prototype = {
     this.ground = new Ground(this.game, 0, 400, 335, 112);
     this.game.add.existing(this.ground);
 
+    // Pipes
+     
     // Create a group to store the pipeGroup prefabs in
     this.pipes = this.game.add.group();
 
-    // Add a timer for generating pipes
-    this.pipeGenerator = this.game.time.events.loop(Phaser.Timer.SECOND * 1.5, this.generatePipes, this);
-    this.pipeGenerator.timer.start();
+    // Instructions 
 
+    this.instructionsGroup = this.game.add.group();
+    this.instructionsGroup.add(this.game.add.sprite(this.game.width/2, 100, 'getReady'));
+    this.instructionsGroup.add(this.game.add.sprite(this.game.width/2, 325, 'instructions'));
+    this.instructionsGroup.setAll('anchor.x', 0.5);
+    this.instructionsGroup.setAll('anchor.y', 0.5);
 
     // Inputs setup
 
@@ -329,9 +341,11 @@ Play.prototype = {
 
     // Add flap control to SPACEBAR
     var flapKey = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+    flapKey.onDown.addOnce(this.startGame, this);
     flapKey.onDown.add(this.bird.flap, this.bird);
 
     // Add mouse click/tap control
+    this.input.onDown.addOnce(this.startGame, this);
     this.input.onDown.add(this.bird.flap, this.bird);
 
   },
@@ -345,6 +359,18 @@ Play.prototype = {
     this.pipes.forEach(function (pipeGroup) {
         this.game.physics.arcade.collide(this.bird, pipeGroup, this.deathHandler, null, this);
     }, this);
+  },
+
+  startGame: function() {
+    this.bird.body.allowGravity = true;
+    this.bird.alive = true;
+
+    // Add a timer for generating pipes
+    this.pipeGenerator = this.game.time.events.loop(Phaser.Timer.SECOND * 1.25, this.generatePipes, this);
+    this.pipeGenerator.timer.start();
+
+    // Remove instructions
+    this.instructionsGroup.destroy();
   },
 
   generatePipes: function () {
@@ -390,7 +416,9 @@ Preload.prototype = {
     this.load.image('ground', 'assets/ground.png');
     this.load.image('title', 'assets/title.png');
     this.load.image('startButton', 'assets/start-button.png');
-
+    this.load.image('instructions', 'assets/instructions.png');
+    this.load.image('getReady', 'assets/get-ready.png');
+    
     this.load.spritesheet('bird','assets/bird.png', 34, 24, 3);
     this.load.spritesheet('pipes','assets/pipes.png', 54, 320, 2);
 
