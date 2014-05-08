@@ -46,7 +46,7 @@ Play.prototype = {
 
     // Add flap control to SPACEBAR
     var flapKey = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-        flapKey.onDown.add(this.bird.flap, this.bird);
+    flapKey.onDown.add(this.bird.flap, this.bird);
 
     // Add mouse click/tap control
     this.input.onDown.add(this.bird.flap, this.bird);
@@ -56,7 +56,12 @@ Play.prototype = {
   update: function() {
     // Make the Bird and Ground collide
     //
-    this.game.physics.arcade.collide(this.bird, this.ground);
+    this.game.physics.arcade.collide(this.bird, this.ground, this.deathHandler, null, this);
+  
+    // Handle collision with pipes
+    this.pipes.forEach(function (pipeGroup) {
+        this.game.physics.arcade.collide(this.bird, pipeGroup, this.deathHandler, null, this);
+    }, this);
   },
 
   generatePipes: function () {
@@ -67,6 +72,16 @@ Play.prototype = {
     }
     pipeGroup.reset(this.game.width, pipeY);
     console.log("Generate Pipe");
+  },
+
+  deathHandler: function () {
+    this.game.state.start('gameover');
+  },
+
+  shutdown: function () {
+    this.game.input.keyboard.removeKey(Phaser.Keyboard.SPACEBAR);
+    this.bird.destroy();
+    this.pipes.destroy();
   }
 
 };
