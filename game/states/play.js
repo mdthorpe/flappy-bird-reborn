@@ -60,12 +60,13 @@ Play.prototype = {
   },
 
   generatePipes: function () {
-    var pipeY = this.game.rnd.integerInRange(-100,100);
+    var pipeY = this.game.rnd.integerInRange(-100, 100);
     var pipeGroup = this.pipes.getFirstExists(false);
     if(!pipeGroup) {
-        pipeGroup = new PipeGroup(this.game, this.pipe);
+        pipeGroup = new PipeGroup(this.game, this.pipes);  
     }
-    pipeGroup.reset(this.game.width + pipeGroup.width/2, pipeY);
+    pipeGroup.reset(this.game.width, pipeY);
+    console.log("Generate Pipe");
   }
 
 };
