@@ -35,7 +35,7 @@ Play.prototype = {
     this.pipes = this.game.add.group();
 
     // Add a timer for generating pipes
-    this.pipeGenerator = this.game.time.events.loop(Phaser.Timer.SECOND * 1.25, this.generatePipes, this);
+    this.pipeGenerator = this.game.time.events.loop(Phaser.Timer.SECOND * 1.5, this.generatePipes, this);
     this.pipeGenerator.timer.start();
 
 
